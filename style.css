@@ -64,7 +64,7 @@ a:hover{
     border-radius: 20px;
 }
 
-#secao-descricao, #secao-strips, #secao-pddl{
+#secao-descricao, #secao-strips, #secao-pddl, #secao-exemplo{
     width: 100%;
     padding: 40px 40px 20px 40px;
     display: flex;
@@ -76,10 +76,10 @@ a:hover{
     background-color: #d3d3d350;
 }
 
-#secao-descricao ol,  #secao-strips ol, #secao-pddl ol{
+#secao-descricao ol,  #secao-strips ol, #secao-pddl ol, #secao-exemplo ol{
     margin: 5px 30px;
 }
 
-#secao-pddl li::marker{
+#secao-pddl li::marker, #secao-exemplo li::marker{
     content: "○   ";
 }
