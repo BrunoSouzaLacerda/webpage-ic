@@ -168,7 +168,25 @@
 </div>
 
 <div id="secao-exemplo">
+    <h2>Exemplo de Aplicação</h2>
+    <p>Consideremos um exemplo onde o objetivo é fazer um jantar, preparar um presente e jogar o lixo fora, partindo das condições iniciais de "lixo presente", "mãos limpas" e "silêncio". As ações disponíveis são cozinhar (precisa de mãos limpas), embrulhar (precisa de silêncio) e carregar o lixo (remove o lixo, suja as mãos e quebra o silêncio).</p>
 
+    <p><strong>Condições Iniciais</strong>: (and (garbage) (cleanHands) (quiet))</p>
+    <p><strong>Objetivo</strong>: (and (dinner) (present) (not (garbage)))</p>
+    <p><strong>Ações</strong>:</p>
+    <ol>
+        <li><strong>Cook</strong>: Precondição (cleanHands), Efeito (dinner)</li>
+        <li><strong>Wrap</strong>: Precondição (quiet), Efeito (present)</li>
+        <li><strong>Carry</strong>: Efeito (and (not (garbage)) (not (cleanHands)))</li>
+        <li><strong>Dolly</strong>: Efeito (and (not (garbage)) (not (quiet)))</li>
+    </ol>
+
+    <h3>Passos do Graphplan</h3>
+    <ol>
+        <li><strong>Primeiro Nível</strong>: Analisa quais ações podem ser realizadas com base nas condições iniciais.</li>
+        <li><strong>Criação de Níveis</strong>: Adiciona novos níveis até que os objetivos apareçam no último nível de proposições.</li>
+        <li><strong>Busca Backward</strong>: Procura um plano que atenda a todas as condições do objetivo respeitando as exclusões mútuas.</li>
+    </ol>
 </div>
 
 <div id="problema-blocks">
