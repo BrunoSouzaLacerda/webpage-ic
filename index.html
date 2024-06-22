@@ -1,0 +1,338 @@
+<link rel="stylesheet" href="style.css">
+
+<div class="cabecalho">
+    <h1 class="nome">
+        WebPage IC
+    </h1>
+    <div class="menu">
+        <a href="#secao-descricao">Sobre o GraphPlan</a>
+        <a href="#secao-strips">A linguagem STRIPS</a>
+        <a href="#secao-pddl">A linguagem PDDL</a>
+        <a href="#secao-exemplo">Aplicação do GraphPlan</a>
+        <a href="#problema-blocks">Problema Blocks</a>
+        <a href="#problema-logistics">Problema Logistics</a>
+    </div>
+</div>
+<div id="secao-descricao">
+    <h2>GraphPlan</h2>
+    <p>Graphplan é um sistema de planejamento criado por Avrim Blum e Merrick Furst em 1995, que utiliza grafos para
+        resolver problemas de planejamento. Baseado nos princípios do STRIPS (Stanford Research Institute Problem
+        Solver), o Graphplan constrói e analisa uma estrutura gráfica chamada de Planning Graph. Este algoritmo garante
+        a geração de um plano válido e, caso não exista um plano, ele retorna "no plan exists".</p>
+
+    <h3>Definições e Estrutura</h3>
+    <p>No contexto do Graphplan:</p>
+    <ol>
+        <li><strong>Domínio STRIPS</strong>: Consiste em operadores com precondições, efeitos adicionados e efeitos
+            deletados, todos representados por proposições.</li>
+        <li><strong>Objetos e Proposições</strong>: Objetos do mundo e proposições representam a condição inicial e o
+            objetivo final.</li>
+        <li><strong>Níveis de Proposições e Ações</strong>: No Planning Graph, nós representam proposições e ações são
+            operadores que alteram estas proposições ao longo do tempo.</li>
+    </ol>
+
+    <h3>Funcionamento do Algoritmo</h3>
+    <ol>
+        <li><strong>Níveis de Proposições</strong>: O Graphplan inicia com um nível contendo a condição inicial.</li>
+        <li><strong>Níveis de Ações</strong>: Para cada nível de proposições, gera-se um nível de ações aplicáveis,
+            levando em conta as relações de exclusão mútua.</li>
+        <li><strong>Relações de Exclusão Mútua</strong>: As ações são mutuamente exclusivas se não podem ocorrer
+            simultaneamente. Existem duas regras principais:
+            <ul>
+                <li><strong>Interferência</strong>: Quando uma ação deleta a precondição ou o efeito adicionado de
+                    outra.</li>
+                <li><strong>Necessidades Competitivas</strong>: Quando as precondições de duas ações são mutuamente
+                    exclusivas.</li>
+            </ul>
+        </li>
+    </ol>
+    <h3>Expansão e Busca</h3>
+    <p>O Graphplan alterna entre a expansão do Planning Graph e a busca de um plano:</p>
+    <ol>
+        <li><strong>Expansão</strong>: Adiciona proposições e ações aos níveis sucessivos do grafo.</li>
+        <li><strong>Busca por um Plano</strong>: Utiliza uma estratégia de encadeamento para trás (Backward-chaining)
+            para encontrar um plano válido.</li>
+    </ol>
+
+    <h3>Benefícios do Graphplan</h3>
+    <ol>
+        <li><strong>Eficiência</strong>: Reduz a busca através da aplicação de exclusões mútuas.</li>
+        <li><strong>Memorização de Estados</strong>: Armazena sub-objetivos inatingíveis, acelerando futuras buscas.
+        </li>
+        <li><strong>Aplicabilidade</strong>: Útil em diversos problemas de planejamento, exemplificado por situações
+            cotidianas como o planejamento de um jantar.</li>
+    </ol>
+</div>
+
+<div id="secao-strips">
+    <h2>Strips</h2>
+    <p>O General Problem Solver tinha capacidades de planificação muito limitadas. Um avanço significativo veio com o
+        STRIPS, desenvolvido em 1969 no SRI International por Richard Fikes e Nils Nilsson. Este programa adota a
+        técnica do General Problem Solver, escolhendo o operador a aplicar com base na diferença entre o estado atual do
+        mundo e o objetivo a ser alcançado, utilizando a chamada <em>means-end analysis</em>.</p>
+
+    <p>STRIPS é um algoritmo que resolve problemas operando com um modelo de mundo representado por um conjunto de
+        fórmulas em lógica de primeira ordem. Um sistema STRIPS descreve o efeito de uma ação através de regras que
+        definem como o modelo de mundo atual deve ser modificado.</p>
+
+    <p>Um sistema STRIPS é definido por um modelo de mundo inicial e por um conjunto de operadores, que correspondem às
+        ações de mudança do estado atual. O STRIPS tenta encontrar uma sequência de operadores que transforme o modelo
+        de mundo inicial em um que satisfaça uma fórmula em lógica de primeira ordem que representa o estado final
+        desejado.</p>
+
+    <h2>Componentes do STRIPS</h2>
+    <p>Cada operador no STRIPS é descrito por:</p>
+    <ol>
+        <li><strong>Pré-condição (precondition):</strong> A condição de aplicabilidade, expressa por uma fórmula de
+            primeira ordem.</li>
+        <li><strong>Add list:</strong> A lista de fórmulas que precisam ser adicionadas ao modelo de mundo atual.</li>
+        <li><strong>Delete list:</strong> A lista de fórmulas que não serão mais verdadeiras após a aplicação do
+            operador e, portanto, precisam ser deletadas.</li>
+    </ol>
+
+    <h2>Novidades Importantes do STRIPS</h2>
+    <ol>
+        <li>Consideração de uma situação completa, incluindo o contexto no qual o estado se encontra, e não apenas o
+            estado isoladamente.</li>
+        <li>Utilização de dedução matemática para decidir os próprios passos.</li>
+    </ol>
+
+    <p>Apesar das vantagens do STRIPS, ele tem limitações na resolução de problemas. Em muitos casos, subproblemas podem
+        ser resolvidos independentemente, mas em outros, a ordem de execução dos passos é crucial. Um exemplo é um
+        pintor que deseja pintar o teto de uma sala: ele precisa estar ao mesmo tempo em cima de uma escada e com a lata
+        de tinta na mão. Se a lata de tinta estiver no chão, o pintor precisa pegar a lata antes de subir a escada. A
+        abordagem linear, que tenta alcançar cada sub-objetivo independentemente, falha nesses casos.</p>
+
+    <p>A ordem de execução é fundamental. Embora resolver casos específicos como o do pintor seja simples, analisar cada
+        ocorrência na resolução de problemas em geral é impraticável. STRIPS enfrenta dificuldades semelhantes e não
+        consegue resolver muitos problemas de não linearidade. Sussman apresentou vários exemplos em que o STRIPS falha
+        em resolver esses problemas.</p>
+</div>
+
+<div id="secao-pddl">
+    <h2>PDDL</h2>
+    <p>A PDDL, criada em 1998, é a linguagem oficial das competições internacionais de planejamento, que acontecem
+        bienalmente na principal conferência de planejamento da área, a <em>International Conference on Automated
+            Planning and Scheduling (ICAPS)</em>. O principal objetivo da linguagem, no contexto das competições, é
+        permitir comparações de desempenho entre diferentes planejadores em diversos domínios.</p>
+
+    <p>A PDDL é o resultado da combinação de vários formalismos de planejamento, principalmente o STRIPS e o ADL. Devido
+        ao sucesso nas competições, a linguagem evoluiu significativamente e agora é utilizada em aplicações reais.
+        Atualmente, existem cinco versões da PDDL. Cada nova versão adiciona características e aumenta a expressividade
+        da linguagem, permitindo a especificação de uma variedade maior de problemas.</p>
+
+    <p>As evoluções da PDDL são propostas por um grupo de pesquisadores experientes. Após a publicação das novas
+        características e da gramática, os planejadores são desenvolvidos ou modificados para operar com a nova versão.
+        A tabela abaixo mostra as versões, anos de lançamento, competições, conferências e publicações que descrevem as
+        modificações na linguagem.</p>
+
+    <h3>PDDL1.2</h3>
+    <p>A PDDL1.2 foi desenvolvida para a primeira competição de planejamento (IPC-1). Além de STRIPS e ADL, a linguagem
+        baseia-se em outros formalismos, como SIPE-2, Prodigy-4.0, UMCP, Unpop e UCPOP. A primeira versão da PDDL
+        introduziu vários conceitos e formas de expressar um problema de planejamento, alguns dos quais ainda são
+        utilizados hoje. No entanto, os autores da linguagem argumentam que poucos planejadores poderiam lidar com a
+        especificação completa da linguagem. Com esta versão, era possível expressar um domínio puramente STRIPS ou
+        utilizar características do ADL, como efeitos condicionais, quantificadores universais, disjunção nas
+        pré-condições e predicados negativos.</p>
+
+    <h3>PDDL2.1</h3>
+    <p>A PDDL2.1 introduziu características para especificar problemas de planejamento que exigem dimensões de tempo e
+        recursos. A dimensão tempo é especificada por ações durativas, que possuem duração e cujos efeitos não são
+        aplicados instantaneamente. Os recursos são variáveis de estado numéricas. Na PDDL2.1, isso foi formalizado e
+        utilizado nas competições. Além disso, a versão 2.1 introduziu o conceito de métricas, permitindo minimizar ou
+        maximizar o valor de uma variável numérica. A versão foi dividida em cinco níveis:</p>
+    <ol>
+        <li>Nível 1: Corresponde à versão anterior (1.2) da PDDL.</li>
+        <li>Nível 2: Uso de variáveis de estado numéricas.</li>
+        <li>Nível 3: Uso de ações durativas discretas.</li>
+        <li>Nível 4: Uso de ações durativas contínuas.</li>
+        <li>Nível 5: Especificação completa da PDDL2.1.</li>
+    </ol>
+
+    <h3>PDDL2.2</h3>
+    <p>A PDDL2.2 adicionou os conceitos de predicados derivados e eventos exógenos. Predicados derivados são regras que
+        alteram o valor dos predicados independentemente de qualquer ação do domínio. Eventos exógenos são eventos
+        incondicionais e determinísticos que alteram o valor de um predicado em pontos de tempo conhecidos a priori,
+        também independentemente de qualquer ação.</p>
+
+    <h3>PDDL3.0</h3>
+    <p>A PDDL3.0 foi desenvolvida para a quinta competição internacional de planejamento (IPC-5). O foco principal foi a
+        qualidade do plano gerado. Os autores introduziram restrições na trajetória do plano, que são regras aplicadas
+        às ações e estados intermediários. Essas restrições podem ser fortes ou fracas. As fortes devem ser
+        obrigatoriamente obedecidas, enquanto as fracas são desejáveis, mas não obrigatórias.</p>
+
+    <h3>PDDL3.1</h3>
+    <p>Poucas modificações ocorreram da PDDL3.0 para a PDDL3.1. Antes da versão 3.1, as variáveis de estado eram
+        declaradas como tuplas de objetos que representavam valores booleanos ou numéricos. A partir da versão 3.1, é
+        possível declarar tuplas de objetos que representam outro objeto.</p>
+</div>
+
+<div id="secao-exemplo">
+
+</div>
+
+<div id="problema-blocks">
+    <h2>Blocks</h2>
+    <div class="problema">
+        <p>Problema</p>
+        <div class="dp-background">
+            <pre><code>
+(define (problem blocks_problem)
+(:domain blocks)
+
+    ;;Definicao dos objetos do problema
+(:objects
+    b1 b2 b3 b4 - bloco
+    mesa - bloco
+)
+
+    ;;Inicio do problema
+(:init
+    (esta b1 mesa)
+    (esta b2 mesa)
+    (esta b3 mesa)
+    (esta b4 mesa)
+    (livre b1)
+    (livre b2)
+    (livre b3)
+    (livre b4)      ;;  Blocos  b1 b2 b3 b4
+    (livre mesa)   ;;  Mesa    ---------------------------
+)
+
+    ;;Objetivo do problema
+(:goal
+    (and            ;;      b1
+    (esta b1 b2)    ;;      b2
+    (esta b2 b3)    ;;      b3
+    (esta b3 b4)    ;;      b4
+    (esta b4 mesa) ;; ------------- 
+    )
+)
+)
+            </code></pre>
+        </div>
+    </div>
+    <div class="dominio">
+        <p>Dominio</p>
+        <div class="dp-background">
+            <pre><code style="font-family: Source Code Pro, monospace;">
+(define (domain blocks)
+(:requirements :strips)
+
+;;Definicao dos tipos do dominio
+(:types
+    bloco
+)
+
+;;Definicao dos predicados do dominio
+;;esta(x, y) x esta em cima de y
+;;livre(x) x esta livre
+(:predicates
+    (esta ?x ?y)  
+    (livre ?x)   
+)
+
+;;Definicao das acoes do dominio
+;;move(x, a, b) move o bloco x de a para b
+(:action move
+    :parameters (?b ?from ?to)
+    :precondition (and (livre ?b) (livre ?to) (esta ?b ?from))
+    :effect (and (not (esta ?b ?from)) (not (livre ?to)) (esta ?b ?to) (livre ?from))
+)
+)
+            </code></pre>
+        </div>
+    </div>
+</div>
+
+<div id="problema-logistics">
+    <h2>Logistics</h2>
+    <div class="problema">
+        <p>Problema</p>
+        <div class="dp-background">
+            <pre><code>
+(define (problem logistics-problem)
+(:domain logistics)
+
+;;Definicao dos objetos do problema 
+(:objects
+    loc1 loc2 loc3 loc4 - location
+    truck1 - truck
+    airplane1 - airplane
+    package1 package2 - package)
+    
+    ;;Estado inicial do problema
+(:init
+    (at truck1 loc1)    ;; Caminhão em 1
+    (at airplane1 loc2) ;; Avião em 2
+    (at package1 loc1)  ;; P1 em 1
+    (at package2 loc2)  ;; P2 em 2
+    (empty truck1)      ;; Caminhão vazio
+    (empty airplane1))  ;; Avião vazio
+    
+    ;;Objetivo do problema
+(:goal
+    (and
+    (at package1 loc3)    ;; P1 em 3
+    (at package2 loc4)    ;; P2 em 4
+    )
+)
+)
+        </code></pre>
+        </div>
+    </div>
+    <div class="dominio">
+        <p>Dominio</p>
+        <div class="dp-background">
+            <pre><code style="font-family: Source Code Pro, monospace;">
+(define (domain logistics)
+(:requirements :strips :typing)
+
+;;Definicao dos tipos do dominio
+;;Caminhão e avião são veículos
+;;Pacote, veiculo e localização são objetos
+(:types 
+    package vehicle location - object
+    truck airplane - vehicle
+)
+
+;;Predicados
+;;at(x, y) objeto x está em y
+;;in(x, y) pacote x está no veículo y
+;;empty(x) o veículo está vazio
+(:predicates
+    (at ?obj - object ?loc - location)
+    (in ?pkg - package ?veh - vehicle)
+    (empty ?veh - vehicle))
+
+;;Ações
+;;load(x, y, z) carregue pacote x no veículo y em z
+(:action load
+    :parameters (?pkg - package ?veh - vehicle ?loc - location)
+    :precondition (and (at ?pkg ?loc) (at ?veh ?loc) (empty ?veh))
+    :effect (and (not (at ?pkg ?loc)) (in ?pkg ?veh) (not (empty ?veh))))
+
+;;unload(x, y, z) descarregue pacote x do veículo y em z
+(:action unload
+    :parameters (?pkg - package ?veh - vehicle ?loc - location)
+    :precondition (and (at ?veh ?loc) (in ?pkg ?veh))
+    :effect (and (not (in ?pkg ?veh)) (at ?pkg ?loc) (empty ?veh)))
+
+;;drive(x, y, z) dirigir x de y para z
+(:action drive
+    :parameters (?veh - truck ?from - location ?to - location)
+    :precondition (at ?veh ?from)
+    :effect (and (not (at ?veh ?from)) (at ?veh ?to)))
+
+;;fly(x, y, z) voar com x de y para z
+(:action fly
+    :parameters (?veh - airplane ?from - location ?to - location)
+    :precondition (at ?veh ?from)
+    :effect (and (not (at ?veh ?from)) (at ?veh ?to)))
+)
+        </code></pre>
+        </div>
+
+    </div>
+
+</div>
